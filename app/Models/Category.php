@@ -9,4 +9,10 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'user_id'];
+
+
+    public function links()
+    {
+        return $this->hasMany(Link::class);
+    }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LinkController;
 
 //auth routes
 Route::get('/register' , [UserController::class, 'register'])->name('register');
@@ -24,3 +25,4 @@ Route::get('/about', [HomePageController::class, 'about'])->name('about');
 
 //
 Route::resource('categories', CategoryController::class)->middleware('auth');
+Route::resource('links', LinkController::class)->middleware('auth');

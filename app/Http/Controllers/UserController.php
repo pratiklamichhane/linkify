@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -29,9 +30,18 @@ class UserController extends Controller
                     ->uncompromised()
             ]
         ]);
+        try{
         $validated['password'] = bcrypt($validated['password']);
         User::create($validated);
+
+        Mail::send('emails.hello', ['name' => $validated['name']], function($message) use ($validated){
+            $message->to($validated['email'], $validated['name'])->subject('Welcome to our site');
+        });
+
         return redirect()->route('login')->with('success', 'Please login to continue');
+    }catch(\Exception $e){
+        return back()->with('error', 'Something went wrong');
+    }
     }
 
 

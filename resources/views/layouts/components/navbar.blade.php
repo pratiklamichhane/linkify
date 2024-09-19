@@ -12,6 +12,11 @@
                         <a class="nav-link" href="{{route('categories.index')}}" title="Cart"><i class="fas fa-tags"></i> Categories <i
                                 class="fas fa-tags shortmenu animate"></i></a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('links.index')}}" title="Links"><i class="fas fa-link"></i> Links <i
+                                class="fas fa-link shortmenu animate"></i></a>
+                    </li>
                     
                 </ul>
                 <ul class="navbar-nav ml-md-auto d-md-flex">
