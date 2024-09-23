@@ -23,6 +23,7 @@ class User extends Authenticatable
         'phone',
         'username',
         'profile_image',
+        'is_otp_verified',
     ];
 
     /**

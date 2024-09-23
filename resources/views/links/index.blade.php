@@ -8,7 +8,19 @@
                 {{ session('success') }}
             </div>
         @endif
-        <a href="{{ route('links.create') }}" class="btn btn-primary">Create Link</a>
+        <!-- search bar -->
+        <form action="{{ route('links.index') }}" method="GET">
+            <div class="row">
+            <div class="form-group col-8">
+                <input type="text" name="search" class="form-control" placeholder="Search by title">
+            </div>
+            <button type="submit" class="btn btn-primary" class="col-4">Search</button>
+            <a href="{{ route('links.index') }}" class="btn btn-primary mb-3">Clear Search</a>
+            </div>
+        </form>
+
+
+        <a href="{{ route('links.create') }}" class="btn btn-primary mb-3">Create Link</a>
         <table class="table">
             <thead>
                 <tr>
@@ -22,6 +34,11 @@
                 </tr>
             </thead>
             <tbody>
+                @if($links->isEmpty())
+                    <tr>
+                        <td colspan="7" class="text-bold text-center"><b>No links found.</b></td>
+                    </tr>
+                @endif
                 @foreach($links as $link)
                     <tr>
                         <td>{{ $loop->iteration }}</td>

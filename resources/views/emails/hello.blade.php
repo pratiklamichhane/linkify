@@ -17,5 +17,8 @@
 
 <p>Hi, {{ $name }}</p>
 <p>Thank you for registering with us.</p>
+<p>Here is your OTP to verify</p>
+<b>{{$otp}}</b>
+<p>Thank you</p>
 </div>
 

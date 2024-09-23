@@ -13,13 +13,18 @@ class LinkController extends Controller
      */
     public function index()
     {
-        $links = Link::where('user_id', auth()->user()->id)->get();
-
-        $links->map(function($link){
+        $request = request();
+        $query = Link::where('user_id', auth()->user()->id);
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+        $links = $query->get();
+        
+        $links->map(function ($link) {
             $link->remaining_days = $link->reminder_duration - now()->diffInDays($link->created_at);
             $link->remaining_days = intval($link->remaining_days);
         });
-        return view('links.index' , compact('links'));
+        return view('links.index', compact('links'));
     }
 
     /**
@@ -28,7 +33,7 @@ class LinkController extends Controller
     public function create()
     {
         $categories = Category::where('user_id', auth()->user()->id)->get();
-        return view('links.create' , compact('categories'));
+        return view('links.create', compact('categories'));
     }
 
     /**
@@ -62,7 +67,7 @@ class LinkController extends Controller
     public function edit(Link $link)
     {
         $categories = Category::where('user_id', auth()->user()->id)->get();
-        return view('links.edit' , compact('link', 'categories'));
+        return view('links.edit', compact('link', 'categories'));
     }
 
     /**

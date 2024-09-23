@@ -8,6 +8,12 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav animate side-nav">
                     
+                    @if(auth()->check() && auth()->user()->role == 'admin')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('users.index')}}" title="Users"><i class="fas fa-users"></i> Users <i
+                                class="fas fa-users shortmenu animate"></i></a>
+                    </li>
+                    @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('categories.index')}}" title="Cart"><i class="fas fa-tags"></i> Categories <i
                                 class="fas fa-tags shortmenu animate"></i></a>
@@ -17,6 +23,7 @@
                         <a class="nav-link" href="{{route('links.index')}}" title="Links"><i class="fas fa-link"></i> Links <i
                                 class="fas fa-link shortmenu animate"></i></a>
                     </li>
+                    @endif
                     
                 </ul>
                 <ul class="navbar-nav ml-md-auto d-md-flex">
