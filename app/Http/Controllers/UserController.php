@@ -29,20 +29,9 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $user = User::create($validated);
 
-        $otp = rand(100000, 999999);
-        
-        OTP::create([
-            'user_id'=> $user->id,
-            'otp'=> $otp
-        ]);
-
-        session(['user_id' => $user->id]);
-
-        Mail::send('emails.hello', ['name' => $validated['name'] , 'otp' => $otp ], function($message) use ($validated){
-            $message->to($validated['email'], $validated['name'])->subject('Welcome to our site');
-        });
-
-        return redirect()->route('otp')->with('success', 'We have sent you a otp to your email');
+        //login user
+        Auth::login($user);
+        return redirect()->route('home');
     }catch(\Exception $e){
         dd($e);
         return back()->with('error', 'Something went wrong');
@@ -64,14 +53,6 @@ class UserController extends Controller
         ]);
         Auth::attempt($validated);
         if(Auth::check()){
-            if (Auth::user()->is_otp_verified == false){
-                Auth::logout();
-                return redirect()->route('otp');
-            }
-            if (Auth::user()->is_banned){
-                Auth::logout();
-                return back()->with('error', 'You are banned please contact admin');
-            }
             return redirect()->route('home');
         }
         return back()->with('error', 'Invalid credentials');

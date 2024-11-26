@@ -45,8 +45,8 @@
                         <td>{{ $link->title }}</td>
                         <td><a href="{{$link->url}}" target="_blank">Click Here</a></td>
                         <td>{{ $link->category->name }}</td>
-                        <td>{{ $link->reminder_duration }}</td>
                         <td>{{ $link->remaining_days }}</td>
+                        <td class="reminder-duration">{{ $link->remaining_days * 24 * 60 * 60 }}</td>
                         <td>
                             <a href="{{ route('links.edit', $link->id) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('links.destroy', $link->id) }}" method="POST" style="display: inline">
@@ -60,4 +60,28 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reminderDurations = document.querySelectorAll('.reminder-duration');
+            reminderDurations.forEach(reminderDuration => {
+                let durationInSeconds = parseInt(reminderDuration.innerText);
+                const interval = setInterval(() => {
+                    if (durationInSeconds <= 0) {
+                        clearInterval(interval);
+                        reminderDuration.innerText = 'Expired';
+                    } else {
+                        durationInSeconds--;
+                        const month = Math.floor(durationInSeconds / (30 * 24 * 60 * 60));
+                        const days = Math.floor((durationInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+                        const hours = Math.floor((durationInSeconds % (24 * 60 * 60)) / (60 * 60));
+                        const minutes = Math.floor((durationInSeconds % (60 * 60)) / 60);
+                        const seconds = durationInSeconds % 60;
+                        reminderDuration.innerText = `${month} month ${days} days ${hours}:${minutes}:${seconds}`;
+                    }
+                }, 1000);
+            });
+        });
+    </script>
+
 @endsection
