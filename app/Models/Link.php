@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Link extends Model
 {
     use HasFactory;
-    protected $fillable = ['category_id', 'title', 'url', 'description', 'reminder_duration' , 'user_id'];
+    protected $fillable = ['category_id', 'title', 'url', 'description', 'reminder_duration' , 'user_id' , 'reminder_at'];
 
     public function category()
     {

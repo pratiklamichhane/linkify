@@ -49,6 +49,7 @@ class LinkController extends Controller
             'reminder_duration' => 'required|integer'
         ]);
         $validated['user_id'] = auth()->user()->id;
+        $validated['reminder_at'] = now()->addDays((int) $validated['reminder_duration']);
         Link::create($validated);
         return redirect()->route('links.index')->with('success', 'Link created successfully');
     }
