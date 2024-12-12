@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReminderEmail;
 
 class LinkController extends Controller
 {
@@ -51,6 +53,13 @@ class LinkController extends Controller
         $validated['user_id'] = auth()->user()->id;
         $validated['reminder_at'] = now()->addDays((int) $validated['reminder_duration']);
         Link::create($validated);
+
+        // Send new mail mentioning we have a new link
+        $link = Link::latest()->first();
+        Mail::to(auth()->user()->email)->send(new ReminderEmail($link));
+
+
+
         return redirect()->route('links.index')->with('success', 'Link created successfully');
     }
 
