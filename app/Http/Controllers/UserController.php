@@ -20,7 +20,7 @@ class UserController extends Controller
             'name'=> 'required|min:6|max:255',
             'email'=> 'required|email',
             'username'=> 'required|min:3|max:20|alpha_dash|unique:users',
-            'phone'=> 'required',
+            'phone'=> 'required|unique:users',
             'password'=> [
                 'required',
             ]
@@ -29,9 +29,18 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $user = User::create($validated);
 
-        //login user
-        Auth::login($user);
-        return redirect()->route('home');
+        $otp = rand(100000, 999999);
+        OTP::create([
+            'user_id'=> $user->id,
+            'otp'=> $otp
+        ]);
+
+        session(['user_id'=> $user->id]);
+        Mail::send('emails.otp', ['otp'=> $otp], function($message) use($user){
+            $message->to($user->email);
+            $message->subject('OTP for registration');
+        });
+        return redirect()->route('otp');
     }catch(\Exception $e){
         dd($e);
         return back()->with('error', 'Something went wrong');
@@ -40,9 +49,6 @@ class UserController extends Controller
 
 
     public function login(){
-        if(session()->has('user_id')){
-            return redirect()->route('otp');
-        }
         return view('auth.login');
     }
 
@@ -52,8 +58,20 @@ class UserController extends Controller
             'password'=> 'required'
         ]);
         Auth::attempt($validated);
-        if(Auth::check()){
+        if(Auth::check() && Auth::user()->is_otp_verified){
             return redirect()->route('home');
+        }elseif(Auth::check() && !Auth::user()->is_otp_verified){
+            $otp = rand(100000, 999999);
+            OTP::create([
+                'user_id'=> Auth::id(),
+                'otp'=> $otp
+            ]);
+            session(['user_id'=> Auth::id()]);
+            Mail::send('emails.otp', ['otp'=> $otp], function($message){
+                $message->to(Auth::user()->email);
+                $message->subject('OTP for Verification');
+            });
+            return redirect()->route('otp');
         }
         return back()->with('error', 'Invalid credentials');
     }

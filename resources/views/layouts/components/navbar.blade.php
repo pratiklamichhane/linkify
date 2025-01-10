@@ -34,7 +34,15 @@
                 </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('profile.edit')}}"><i class="fas fa-user"></i> Profile</a>
+                        <a class="nav-link" href="{{route('profile.edit')}}">
+                            @if(auth()->user()->profile_image)
+                            <div class="profile-image">
+                             <img src="{{asset(auth()->user()->profile_image)}}" alt="" width="40px">
+                            </div>
+                             @else
+                            <i class="fas fa-user"></i>
+                            @endif
+                            Profile</a>
                     </li>
                     <li class="nav-item">
                         <!-- <a class="nav-link" href="#"><i class="fas fa-key"></i> Logout</a>
@@ -47,3 +55,18 @@
                 </ul>
             </div>
         </nav>
+
+        <style>
+            .profile-image {
+                display: inline-block;
+                width: 40px;
+                background-color: #f0f0f0;
+                height: 40px;
+                overflow: hidden;
+                border-radius: 50%;
+            }
+
+            .profile-image img {
+                border-radius: 50%;
+            }
+        </style>
