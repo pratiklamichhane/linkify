@@ -109,7 +109,7 @@
                             {{session('success')}}
                         </div>
                     @endif
-                    @if(session(key: 'error'))
+                    @if(session('error'))
                         <div class="alert alert-danger mx-4 mt-3">
                             {{session('error')}}
                         </div>
@@ -135,6 +135,11 @@
                             <button type="submit" class="btn btn-primary">
                                 Login <i class="fas fa-arrow-right ms-2"></i>
                             </button>
+
+                            <!-- Added Register Link Below Login Button -->
+                            <div class="text-center mt-3">
+                                Already have an account? <a href="{{ route('register') }}">Click here to register</a>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -157,4 +162,4 @@
         }
     </script>
 </body>
-</html></button></span></div>
+</html>

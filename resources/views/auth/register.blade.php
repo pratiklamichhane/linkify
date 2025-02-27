@@ -137,6 +137,12 @@
                             <button type="submit" class="btn waves-effect waves-light">
                                 Create Account <i class="material-icons right">send</i>
                             </button>
+
+                            <!-- Added Login Link Below Register Button -->
+                            <div class="center-align" style="margin-top: 15px;">
+                                Already have an account? <a href="{{ route('login') }}">Click here to login</a>
+                            </div>
+                                                      
                         </form>
                     </div>
                 </div>
@@ -145,4 +151,4 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
-</html></div>
+</html>

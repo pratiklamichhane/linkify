@@ -8,7 +8,7 @@ class HomePageController extends Controller
 {
     public function index()
     {
-        $name = 'Dada hero cha hai';
+        $name = 'Welcome to Linkify';
         return view('homepage', compact('name'));
     }
 
